@@ -1,0 +1,101 @@
+================================================================================
+USE CASE #2: EXPERT NETWORK SUMMARY
+================================================================================
+Scenario: Analyst summarizes findings from expert network engagement
+Risk Level: This example shows the "Steering vs Mosaic" boundary
+
+--------------------------------------------------------------------------------
+ANALYST MEMO (INPUT)
+--------------------------------------------------------------------------------
+
+PHARMAGEN THERAPEUTICS (PGEN) - Expert Network Debrief
+Date: January 20, 2025
+Expert: Dr. James Wilson, former Chief Medical Officer (left PGEN 2022)
+Engagement: GLG, 18 one-hour calls over 6 weeks
+
+BACKGROUND
+We engaged Dr. Wilson to understand the competitive landscape for PGEN's lead
+oncology candidate PG-401, currently in Phase 3 trials.
+
+CALL SUMMARY
+
+Calls 1-5: Historical context on PG-401 development, public MOA data
+Calls 6-10: Competitive landscape analysis, published clinical data review
+Calls 11-15: Discussion of FDA regulatory pathway based on public guidance
+Calls 16-18: "Off the record" discussion of trial enrollment and site feedback
+
+KEY INSIGHTS
+
+Dr. Wilson maintains contact with former colleagues. In our most recent calls,
+he shared the following:
+
+- An investigator at a major trial site told him enrollment is "ahead of schedule"
+- The Data Safety Monitoring Board has not stopped the trial (he heard this from
+  a friend still on the DSMB)
+- He believes interim data "looks promising" based on what he's hearing
+
+Dr. Wilson emphasized this is confidential and we should not attribute it.
+
+INVESTMENT THESIS
+Based on our extensive expert engagement, conviction has increased significantly.
+We recommend building a position ahead of the interim data readout in Q2.
+
+The stock is the #1 most shorted biotech name per 13F analysis. We view this as
+an opportunity - shorts will be forced to cover when data reads out positive.
+
+--------------------------------------------------------------------------------
+EXPECTED REDFLAG OUTPUT
+--------------------------------------------------------------------------------
+
+GATE: AUTO_REJECT
+Severity: CRITICAL (Score: ~55+)
+
+Flags Expected:
+- MNPI (CRITICAL): "DSMB" info, "investigator" info, "confidential"
+- STEERING (CRITICAL): 18 hours = mandatory audit threshold
+- STEERING (HIGH): Conviction increase without public news
+- CROWDING (HIGH): "most shorted", squeeze thesis
+- DEFAMATION (potential): None in this example
+
+--------------------------------------------------------------------------------
+WHY THIS MATTERS
+--------------------------------------------------------------------------------
+
+This is a TEXTBOOK compliance failure that happens at real funds:
+
+1. THE 18-HOUR RED LINE
+   Legitimate mosaic research rarely requires 18 hours with a single expert.
+   This volume suggests the analyst is either:
+   - Steering the expert toward material conclusions
+   - Using the expert as a conduit for insider information
+   - Inefficiently spending compliance budget
+
+2. THE "OFF THE RECORD" TRAP
+   When an expert says "off the record" or "confidential," that's a signal
+   that MNPI is about to be disclosed. A compliant analyst STOPS the call.
+   This analyst continued for 3 more hours.
+
+3. THE DSMB LEAK
+   Data Safety Monitoring Board information is among the most sensitive MNPI
+   in biotech. Even knowing the trial "hasn't been stopped" is material.
+   The expert's "friend on the DSMB" is committing a serious violation.
+
+4. THE CROWDING BLIND SPOT
+   The analyst sees high short interest as opportunity, missing the structural
+   risk: if everyone is short, a squeeze can happen regardless of fundamentals.
+   This is "Endogenous Risk" - the position itself creates the risk.
+
+Real-world consequence: This memo would trigger an immediate compliance
+investigation. The expert relationship would be terminated. Trading would
+be restricted. Depending on severity, SEC referral is possible.
+
+--------------------------------------------------------------------------------
+THE COMPLIANT ALTERNATIVE
+--------------------------------------------------------------------------------
+
+A properly structured expert engagement would:
+- Cap at 5-8 hours total with clear documentation of each call's purpose
+- Focus ONLY on public information synthesis
+- Terminate immediately if expert references non-public sources
+- Document specific public data points that support any thesis change
+- Avoid experts with recent insider access to the target company

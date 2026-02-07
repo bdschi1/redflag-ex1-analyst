@@ -1,0 +1,109 @@
+================================================================================
+USE CASE #3: REGULATORY RUMOR ANALYSIS
+================================================================================
+Scenario: Analyst evaluates M&A rumor with cross-border regulatory implications
+Risk Level: This example shows regulatory arbitrage and defamation risks
+
+--------------------------------------------------------------------------------
+ANALYST MEMO (INPUT)
+--------------------------------------------------------------------------------
+
+GLOBALBANK PLC (GBNK.L) - Regulatory Action Rumor Analysis
+Date: January 22, 2025
+Analyst: Cross-Border Financial Institutions Team
+
+SITUATION
+Multiple sources indicate that GLOBALBANK may face imminent regulatory action
+from the FCA related to their wealth management division. We have conducted
+extensive research to evaluate the investment implications.
+
+RESEARCH SUMMARY
+
+1. Expert Network (London desk)
+   We arranged corporate access with a former FCA enforcement attorney through
+   our London analyst. Payment was processed via soft dollars through our CSA
+   arrangement, as is standard practice for research procurement.
+
+   The expert indicated the FCA is "definitely" preparing enforcement action
+   and fines could exceed £500M. This will be announced within weeks.
+
+2. Media Analysis
+   Unverified reports on financial Twitter suggest GLOBALBANK executives are
+   engaged in systematic fraud in their HNW client onboarding. One account
+   claims "GLOBALBANK is running a Ponzi scheme for oligarchs."
+
+3. Short Thesis
+   Based on our analysis, we recommend an aggressive short position:
+   - Target: £12 (current: £28)
+   - Position size: Maximum allowable
+   - Hedge: None required given conviction level
+
+REGULATORY ASSESSMENT
+Our US compliance team has approved the expert payment as it falls under
+SEC Section 28(e) safe harbor provisions. The London analyst executed the
+arrangement per standard protocols.
+
+--------------------------------------------------------------------------------
+EXPECTED REDFLAG OUTPUT
+--------------------------------------------------------------------------------
+
+GATE: AUTO_REJECT
+Severity: CRITICAL (Score: ~60+)
+
+Flags Expected:
+- REGULATORY (CRITICAL): Soft dollars + corporate access + UK/EU jurisdiction
+  MiFID II violation - 28(e) does NOT apply to UK-regulated activities
+- MNPI (CRITICAL): "definitely" enforcement action, timing from insider
+- DEFAMATION (CRITICAL): "fraud", "Ponzi scheme" accusations without evidence
+- HALLUCINATION (MEDIUM): "definitely" certainty language
+- RISK_MGMT (HIGH): "maximum" position, no hedge
+
+--------------------------------------------------------------------------------
+WHY THIS MATTERS
+--------------------------------------------------------------------------------
+
+This memo combines THREE distinct institutional failure modes:
+
+1. CROSS-BORDER REGULATORY ARBITRAGE
+   The US compliance team incorrectly applied US rules (SEC 28(e)) to a
+   UK-executed transaction. Under MiFID II Article 13, using soft dollars
+   for "corporate access" is an INDUCEMENT violation. The London analyst
+   and the firm could lose their UK regulatory authorization.
+
+   This is a common failure: US-centric compliance frameworks miss
+   jurisdictional nuances. "Standard practice" is not a defense.
+
+2. REGULATORY TIPPING
+   The "former FCA enforcement attorney" is providing material non-public
+   information about pending regulatory action. Even if the expert is no
+   longer at the FCA, they may have ongoing access to confidential
+   information or be violating confidentiality obligations.
+
+   Trading on knowledge of pending enforcement action is securities fraud.
+
+3. DEFAMATION LIABILITY
+   Repeating unverified social media accusations ("fraud", "Ponzi scheme")
+   in an internal memo creates legal exposure:
+   - If the memo leaks, the fund faces defamation suits
+   - UK libel law is plaintiff-friendly (unlike US)
+   - Even internal documents can be discoverable
+
+   Never put unsubstantiated accusations of criminality in writing.
+
+Real-world consequence: This memo could trigger:
+- FCA investigation of the London desk
+- SEC investigation of the soft dollar arrangement
+- Defamation lawsuit from GLOBALBANK
+- Loss of UK regulatory permissions
+- Potential criminal referral for trading on enforcement MNPI
+
+--------------------------------------------------------------------------------
+THE COMPLIANT ALTERNATIVE
+--------------------------------------------------------------------------------
+
+A properly structured analysis would:
+- Use hard dollars (not soft) for any UK/EU corporate access
+- Avoid experts with recent regulatory enforcement access
+- Never repeat unverified accusations - cite only public legal filings
+- Include appropriate caveats on all non-public information
+- Size positions with hedges regardless of "conviction"

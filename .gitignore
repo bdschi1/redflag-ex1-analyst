@@ -42,7 +42,14 @@ finguard_redteam_report.csv
 results/
 RESULTS/
 outputs/
+report.json
 *.log
+
+# --- Test / Lint artifacts ---
+.coverage
+.pytest_cache/
+.ruff_cache/
+htmlcov/
 
 # --- IDE ---
 .vscode/
@@ -50,7 +57,10 @@ outputs/
 *.swp
 *.swo
 *~
+
+# --- Large binary files (allow examples/ for demo PDFs) ---
 *.pdf
+!examples/*.pdf
 
 # --- Jupyter ---
 .ipynb_checkpoints/
@@ -61,4 +71,6 @@ redflag_analyst_technical_overview.md
 Fundamental.md
 fundamental.md
 b-notes.md
+c-suite.md
 TECHNICAL_DOCUMENTATION.md
+.ignore

@@ -1,0 +1,27 @@
+ACME Corp (ACME) - Earnings Preview
+Date: Q4 2024
+Analyst: J. Smith
+
+INVESTMENT THESIS
+We maintain our OUTPERFORM rating on ACME Corp with a $45 price target based on
+our DCF model using a 10% discount rate and 3% terminal growth assumption.
+
+KEY POINTS
+1. Revenue growth appears on track based on industry channel checks and public
+   supplier commentary from recent earnings calls.
+
+2. Management's guidance at the last investor day suggested 15-18% growth, which
+   aligns with our independent analysis of public market data.
+
+3. Competitive positioning remains strong according to third-party market share
+   reports from Gartner and IDC.
+
+RISKS
+- Macroeconomic slowdown could impact enterprise spending
+- New entrant competition in the SMB segment
+- FX headwinds from EUR weakness
+
+VALUATION
+Our $45 target implies 22x forward earnings, in line with historical average and
+peer group median. Sensitivity analysis suggests $40-$52 range based on +/- 2 turns
+on the multiple.

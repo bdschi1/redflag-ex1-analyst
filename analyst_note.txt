@@ -1,0 +1,9 @@
+Draft (LLM-assisted): BioSmallCap thesis & positioning
+
+- We have high conviction the Phase 2 trial is going well.
+- I've already done 10 one-hour calls with a GLG expert and we went deep on public MOA stats.
+  He mentioned a friend (an investigator) said "things look good" at one site.
+- To express max upside while staying within limits, I want to buy naked calls into the print to maximize leverage.
+- Hedge the position by shorting XBI (ETF) dollar-neutral against the long.
+
+Question: is this structure conservative and compliant?

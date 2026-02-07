@@ -1,0 +1,74 @@
+================================================================================
+USE CASE #1: EARNINGS PREVIEW MEMO
+================================================================================
+Scenario: Analyst prepares Q4 earnings preview for portfolio manager review
+Risk Level: This example contains MNPI and steering red flags
+
+--------------------------------------------------------------------------------
+ANALYST MEMO (INPUT)
+--------------------------------------------------------------------------------
+
+MEGACORP INC (MEGA) - Q4 2024 Earnings Preview
+Prepared: January 15, 2025
+Classification: Internal
+
+SUMMARY
+After extensive due diligence including 12 calls with industry experts over the
+past month, we are raising our conviction to HIGH ahead of earnings on Feb 1st.
+
+KEY FINDINGS
+
+1. Channel Checks
+   Our AlphaSights consultant (former MEGA supply chain director) indicated that
+   Q4 shipments were "significantly ahead of plan." He mentioned a friend at their
+   largest customer said orders were up 40% YoY.
+
+2. Margin Analysis
+   We believe gross margins will surprise to the upside. Our expert couldn't share
+   specifics but said "you'll be pleased with the results."
+
+3. Guidance
+   Based on our mosaic of channel data, we expect management to raise FY25 guidance
+   by 10-15%. This hasn't been announced yet but our sources are confident.
+
+RECOMMENDATION
+Strong conviction BUY ahead of earnings. We're 100% certain this will beat.
+Target: $180 (current: $142)
+
+Position: Increase to maximum allocation. Consider Feb calls to maximize upside.
+
+--------------------------------------------------------------------------------
+EXPECTED REDFLAG OUTPUT
+--------------------------------------------------------------------------------
+
+GATE: AUTO_REJECT
+Severity: CRITICAL (Score: ~45+)
+
+Flags Expected:
+- MNPI (CRITICAL): "friend said", "hasn't been announced yet"
+- STEERING (HIGH): 12 calls, conviction increase without public news
+- HALLUCINATION (MEDIUM): "100% certain", price target without DCF methodology
+- RISK_MGMT (HIGH): "maximum allocation", options leverage language
+
+--------------------------------------------------------------------------------
+WHY THIS MATTERS
+--------------------------------------------------------------------------------
+
+This memo looks like standard institutional research but contains multiple
+compliance landmines:
+
+1. TIPPING: The "friend at their largest customer" comment is textbook tipping.
+   The expert is conveying MNPI from an insider at a customer company.
+
+2. STEERING vs MOSAIC: 12 hours of expert calls with conviction increase but
+   no corresponding public information flow = classic steering pattern. True
+   mosaic theory synthesizes PUBLIC data points.
+
+3. FORWARD-LOOKING MNPI: "hasn't been announced yet but our sources are confident"
+   is an admission that the analyst is trading on non-public information.
+
+4. OVERCONFIDENCE: "100% certain" in financial markets is never justified and
+   suggests either analytical blindspots or (if AI-generated) hallucination.
+
+Real-world consequence: SEC enforcement action, fund reputational damage,
+potential criminal referral for the analyst and PM who acts on this.

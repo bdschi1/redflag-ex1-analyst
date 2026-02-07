@@ -1,0 +1,222 @@
+================================================================================
+INSTITUTIONAL FAILURE CASE #2: MNPI LEAKAGE
+================================================================================
+Based on: SEC v. Galleon Group (2011), SAC Capital (2013), and composites
+
+THE SCENARIO
+An analyst's "mosaic research" crosses the line into MNPI. The fund trades.
+The SEC reconstructs the information trail. Criminal charges follow.
+
+--------------------------------------------------------------------------------
+THE MEMO THAT CAUSED THE PROBLEM
+--------------------------------------------------------------------------------
+
+CHIPTECH SEMICONDUCTOR (CHIP) - Earnings Preview
+Date: October 2024
+Classification: HIGHLY CONFIDENTIAL - IC ONLY
+
+SUMMARY
+After 20 one-hour calls with our expert network over the past 6 weeks,
+I have extremely high conviction that CHIP will significantly beat
+consensus on Q3 earnings (reporting Nov 5).
+
+INFORMATION SOURCES
+
+1. Supply Chain Expert (Former CHIP VP Operations, left 2023)
+   - 8 calls totaling 8 hours
+   - Indicated that a friend who still works in CHIP's fab said
+     "yields are the best they've ever seen"
+   - Mentioned wafer starts are "way ahead of Street estimates"
+
+2. Customer Channel Check (Current procurement manager at major OEM)
+   - 5 calls totaling 5 hours
+   - Said their CHIP orders for Q4 are "much larger than last year"
+   - Noted that pricing negotiations suggest CHIP has "significant
+     leverage" indicating supply constraints
+
+3. Industry Consultant (Former semiconductor analyst)
+   - 7 calls totaling 7 hours
+   - Has "sources" at CHIP who say the quarter is "very strong"
+   - Believes guidance will be raised "materially"
+
+CONVICTION CHANGE
+Despite no new public information since last earnings, my conviction
+has increased from NEUTRAL to STRONG BUY based on this expert work.
+
+RECOMMENDATION
+Build maximum position ahead of earnings. This is as close to a
+sure thing as I've seen. Target: $85 (current: $62).
+
+Trade Execution: Begin accumulating immediately. Use different brokers
+to avoid detection of our accumulation pattern.
+
+--------------------------------------------------------------------------------
+WHAT WENT WRONG
+--------------------------------------------------------------------------------
+
+1. THE TRADE
+   - Fund accumulated $50M position over 2 weeks
+   - CHIP beat earnings by 15%, stock rallied 25%
+   - Fund profit: ~$12.5M
+
+2. THE SEC INVESTIGATION
+   Two months later, SEC opened investigation based on:
+   - Unusual options activity flagged by FINRA
+   - Fund's trading pattern matched timing of expert calls
+   - Expert network firm subpoenaed, produced call logs
+
+3. THE RECONSTRUCTION
+   SEC reconstructed the MNPI chain:
+
+   CHIP Employee (Insider)
+        ↓ told "friend"
+   Expert (Former VP)
+        ↓ conveyed to
+   Analyst
+        ↓ wrote memo for
+   PM (traded)
+
+   Each link in this chain committed a violation.
+
+4. THE CHARGES
+   - Analyst: Securities fraud, conspiracy (criminal)
+   - PM: Securities fraud (criminal, knew or should have known)
+   - Expert: Tipping (civil, cooperated)
+   - Fund: $50M disgorgement + $25M penalty
+
+5. THE OUTCOME
+   - Analyst: 3 years federal prison
+   - PM: 18 months federal prison
+   - Fund: Shut down, LPs lost capital during wind-down
+   - Expert: Industry ban, civil penalty
+
+--------------------------------------------------------------------------------
+WHAT REDFLAG WOULD HAVE CAUGHT
+--------------------------------------------------------------------------------
+
+Input: The original memo text
+Output:
+
+GATE: AUTO_REJECT
+Severity: CRITICAL (Score: 60+)
+
+Flags:
+- STEERING (CRITICAL): 20 hours of expert calls detected
+  Evidence: "20 one-hour calls"
+  Recommendation: MANDATORY AUDIT for Steering vs. Mosaic violations.
+
+- MNPI (CRITICAL): Multiple tipping indicators
+  Evidence: "friend who still works", "sources at CHIP"
+  Recommendation: IMMEDIATE LEGAL REVIEW. Do not trade until cleared.
+
+- STEERING (HIGH): Conviction change without public news
+  Evidence: "Despite no new public information...conviction increased"
+  Recommendation: Document public sources supporting thesis change.
+
+- HALLUCINATION (MEDIUM): Certainty language
+  Evidence: "sure thing"
+  Recommendation: Temper certainty claims.
+
+- RISK_MGMT (HIGH): Position sizing language
+  Evidence: "maximum position"
+  Recommendation: Size appropriately for risk limits.
+
+ADDITIONAL FLAG (Pattern Detection):
+- EVASION INDICATOR: "Use different brokers to avoid detection"
+  This language suggests consciousness of guilt and would be
+  devastating evidence in any enforcement action.
+
+--------------------------------------------------------------------------------
+THE LEGAL FRAMEWORK
+--------------------------------------------------------------------------------
+
+MNPI ELEMENTS:
+1. Material: Would a reasonable investor consider it important?
+2. Non-Public: Not disseminated to the public
+3. Breach of Duty: Insider or tippee breached fiduciary duty
+
+THE TIPPING CHAIN:
+Under Dirks v. SEC and Salman v. US, liability extends to:
+- Tipper: The insider who disclosed (CHIP employee)
+- First-level tippee: Expert who received and passed on
+- Second-level tippee: Analyst who received and traded/recommended
+- Downstream: Anyone who trades on the information
+
+"MOSAIC THEORY" IS NOT A DEFENSE WHEN:
+- Any single piece of information is MNPI
+- The "mosaic" is constructed from non-public sources
+- Conviction increases without corresponding public information
+- Experts are conduits for insider information
+
+THE 20-HOUR RED FLAG:
+Legitimate mosaic research synthesizes PUBLIC data points:
+- SEC filings, earnings calls, investor days
+- Industry reports, trade publications
+- Publicly observable data (satellite imagery, web traffic)
+
+20 hours with experts on a single stock suggests:
+- Steering experts toward desired conclusions
+- Using experts as conduits for insider information
+- Inefficient/non-compliant research process
+
+--------------------------------------------------------------------------------
+THE COMPLIANT ALTERNATIVE
+--------------------------------------------------------------------------------
+
+CHIPTECH SEMICONDUCTOR (CHIP) - Earnings Preview
+Date: October 2024
+
+SUMMARY
+Based on our analysis of public data, we see potential upside to
+consensus Q3 estimates.
+
+PUBLIC INFORMATION SOURCES
+
+1. Supply Chain Data (Public)
+   - Industry shipment data from SIA shows [X]% growth
+   - Competitor earnings calls referenced strong demand
+   - Public capex data suggests capacity utilization at [Y]%
+
+2. Customer Commentary (Public)
+   - OEM X earnings call: "seeing strong demand for chips"
+   - OEM Y investor day: "inventory levels normalizing"
+
+3. Valuation
+   - CHIP trades at [X]x forward earnings vs [Y]x historical
+   - Our DCF model suggests fair value of $[Z]
+
+EXPERT CONSULTATION (Compliant)
+   - 3 hours total with industry consultant
+   - Focused on interpreting public data
+   - No discussion of non-public company information
+   - Call notes attached per compliance policy
+
+RECOMMENDATION
+Overweight. Target: $70 (current: $62) based on DCF methodology.
+Position size per standard risk guidelines.
+
+--------------------------------------------------------------------------------
+KEY LESSONS
+--------------------------------------------------------------------------------
+
+1. THE "FRIEND" TRIGGER
+   When an expert says "a friend at the company said..." STOP.
+   That is the moment MNPI enters your research. Terminate the call.
+
+2. CONVICTION WITHOUT NEWS = RED FLAG
+   If your conviction changes but the public information hasn't,
+   ask yourself: where did the new information come from?
+
+3. HOURS MATTER
+   >10 hours on one stock = documentation required
+   >15 hours = compliance review
+   >20 hours = presumption of steering/improper research
+
+4. EVASION = CONSCIOUSNESS OF GUILT
+   "Use different brokers to avoid detection" is not clever tradecraft.
+   It's evidence of intent that prosecutors will use against you.
+
+5. LLMs CAN'T EVALUATE MNPI
+   An LLM will happily incorporate MNPI into analysis. It has no
+   concept of materiality or duty. RedFlag catches the patterns,
+   but humans must evaluate the actual information sources.
