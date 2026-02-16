@@ -281,3 +281,12 @@ redflag_ex1_analyst/
 
 This repository is a **red teaming / control** artifact. It does not provide legal advice.
 Always route flagged items through your firm's Compliance policies and counsel.
+
+---
+
+![Python](https://img.shields.io/badge/python-3.11+-3776AB?style=flat&logo=python&logoColor=white)
+
+![Streamlit](https://img.shields.io/badge/Streamlit-FF4B4B?style=flat&logo=streamlit&logoColor=white)
+![Pydantic](https://img.shields.io/badge/Pydantic-E92063?style=flat&logo=pydantic&logoColor=white)
+![PyMuPDF](https://img.shields.io/badge/PyMuPDF-009688?style=flat)
+![python-docx](https://img.shields.io/badge/python--docx-2B579A?style=flat&logo=microsoftword&logoColor=white)
