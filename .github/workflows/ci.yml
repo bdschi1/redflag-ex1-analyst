@@ -35,8 +35,15 @@ jobs:
       - name: Run CLI smoke test
         run: |
           echo "Testing CLI with sample files..."
-          python run_redflag.py --input analyst_note.txt
-          echo "Exit code: $?"
+          python run_redflag.py --input analyst_note.txt || EXIT_CODE=$?
+          EXIT_CODE=${EXIT_CODE:-0}
+          echo "Exit code: $EXIT_CODE"
+          # Exit codes 0 (PASS), 10 (PM_REVIEW), 20 (AUTO_REJECT) are valid
+          if [ "$EXIT_CODE" -ne 0 ] && [ "$EXIT_CODE" -ne 10 ] && [ "$EXIT_CODE" -ne 20 ]; then
+            echo "FAIL: unexpected exit code $EXIT_CODE"
+            exit 1
+          fi
+          echo "CLI smoke test passed (exit $EXIT_CODE)"
 
   lint:
     runs-on: ubuntu-latest
@@ -102,8 +109,8 @@ jobs:
           echo "=== Verifying exit codes ==="
 
           # Clean file should be PASS (0) or PM_REVIEW (10)
-          python run_redflag.py --input examples/analyst_note_clean.txt > /dev/null
-          EXIT_CODE=$?
+          python run_redflag.py --input examples/analyst_note_clean.txt > /dev/null || EXIT_CODE=$?
+          EXIT_CODE=${EXIT_CODE:-0}
           if [ $EXIT_CODE -gt 10 ]; then
             echo "FAIL: Clean note should not AUTO_REJECT"
             exit 1
@@ -111,8 +118,9 @@ jobs:
           echo "Clean note: exit $EXIT_CODE (OK)"
 
           # Risky file should be AUTO_REJECT (20)
-          python run_redflag.py --input examples/analyst_note_risky.txt > /dev/null
-          EXIT_CODE=$?
+          EXIT_CODE=0
+          python run_redflag.py --input examples/analyst_note_risky.txt > /dev/null || EXIT_CODE=$?
+          EXIT_CODE=${EXIT_CODE:-0}
           if [ $EXIT_CODE -ne 20 ]; then
             echo "FAIL: Risky note should AUTO_REJECT (exit 20), got $EXIT_CODE"
             exit 1
@@ -120,8 +128,9 @@ jobs:
           echo "Risky note: exit $EXIT_CODE (OK)"
 
           # Test --no-filter flag works
-          python run_redflag.py --input examples/analyst_note_risky.txt --no-filter > /dev/null
-          EXIT_CODE=$?
+          EXIT_CODE=0
+          python run_redflag.py --input examples/analyst_note_risky.txt --no-filter > /dev/null || EXIT_CODE=$?
+          EXIT_CODE=${EXIT_CODE:-0}
           if [ $EXIT_CODE -ne 20 ]; then
             echo "FAIL: Risky note with --no-filter should AUTO_REJECT (exit 20), got $EXIT_CODE"
             exit 1
