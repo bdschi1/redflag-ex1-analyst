@@ -277,6 +277,14 @@ redflag_ex1_analyst/
 
 ---
 
+## Related Work
+
+This compliance tool draws on academic research in financial audit AI and adversarial robustness:
+
+- **AuditAgent** (Bai et al., 2025) — Multi-agent framework for cross-document fraud evidence discovery with variational Bayesian prior modeling. Directly informs `bayesian_risk_priors.py` — beta-binomial conjugate priors for each detection rule, enabling probabilistic audit focus narrowing from 8 rules to highest-priority items. [arXiv:2510.00156](https://arxiv.org/abs/2510.00156)
+- **Red-Teaming Financial AI / FinJailbreak** (Li, 2026) — 1,250 adversarial prompts across 5 financial malfeasance categories (market manipulation, insider trading, regulatory evasion, data privacy, unfair consumer practice). Validates the threat model this tool defends against. [AAAI 2026]
+- **Explainable AI in Finance** (Sotic & Radovanovic, 2024) — Comprehensive taxonomy of XAI methods for financial applications, including stakeholder-specific explainability requirements for regulators and compliance officers. [doi:10.20935/AcadAI8017]
+
 ## Notes / Disclaimer
 
 This repository is a **red teaming / control** artifact. It does not provide legal advice.
