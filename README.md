@@ -2,11 +2,9 @@
 
 [![CI](https://github.com/bdschi1/redflag_ex1_analyst/actions/workflows/ci.yml/badge.svg)](https://github.com/bdschi1/redflag_ex1_analyst/actions/workflows/ci.yml)
 
-**Deterministic, rule-based red-teaming engine that scans analyst notes, research PDFs, and IC memos for MNPI, tipping, regulatory arbitrage, and portfolio construction traps — gating outputs as PASS, PM_REVIEW, or AUTO_REJECT in under 60 seconds.**
+A compliance scanning tool that checks analyst notes, research reports, and investment committee memos for regulatory red flags — MNPI (material non-public information — the core concern in insider trading law), conflicts of interest, and common institutional compliance violations. Each document is scored as PASS, PM_REVIEW, or AUTO_REJECT. The engine is deterministic and rule-based: same input, same output, no model variance.
 
-> **Objective:** General-purpose AI safety benchmarks miss institutional-finance nuance. FinGuard-Red provides a **deterministic RedFlag gate** and **"Golden Data" adversarial scenarios** to catch subtle but catastrophic errors — from **Regulatory Arbitrage** (MiFID II vs. SEC) to **Endogenous Risk** (crowded exits).
-
-**Built for the buy side.** This tool is designed for asset managers, hedge funds, and buy-side research teams. Published sell-side research from established firms (Goldman Sachs, Morgan Stanley, etc.) and SEC filings are assumed to carry zero MNPI risk — the compliance burden for those documents sits with the issuing firm, not the reader. When sell-side research is detected, MNPI-related flags are automatically suppressed; portfolio construction flags remain active.
+This tool is designed for asset managers, hedge funds, and buy-side research teams. Published sell-side research from established firms (Goldman Sachs, Morgan Stanley, etc.) and SEC filings are assumed to carry zero MNPI risk — the compliance burden for those documents sits with the issuing firm, not the reader. When sell-side research is detected, MNPI-related flags are automatically suppressed; portfolio construction flags remain active.
 
 ---
 
@@ -36,7 +34,7 @@
 
 ## 🎯 The "Golden" Benchmarks (12 Scenarios)
 
-This framework tests failure modes that standard RLHF training data often misses, across four categories.
+This framework tests failure modes that standard RLHF training data often misses, across four categories. In plain terms: these are 12 structured test inputs designed to verify that the engine correctly flags specific compliance and risk scenarios — covering regulatory violations, portfolio construction errors, governance failures, and fund-level structural risks.
 
 ### 1) Compliance & MNPI
 - **MNPI & Tipping** — Steering vs. Mosaic Theory; Dirks v. SEC tipping framework
@@ -58,7 +56,7 @@ This framework tests failure modes that standard RLHF training data often misses
 - **Short-and-Distort** — unverified defamatory claims in activist short reports; manipulation liability
 - **Redemption & Liquidity Mismatch** — adverse selection death spiral when redemptions force selling liquid positions first (cf. Woodford 2019)
 
-These are the failure modes that get analysts fired, funds shut down, or PMs indicted — and that standard AI safety benchmarks don't test for.
+These scenarios cover compliance failures commonly flagged in SEC enforcement actions and regulatory examinations, as well as portfolio construction errors that standard AI safety benchmarks do not address.
 
 ---
 
@@ -216,7 +214,7 @@ python run_redflag.py --input use_cases/01_earnings_preview.txt --pretty
 
 ## 💀 Institutional Failure Cases
 
-The `failure_cases/` directory contains detailed post-mortems of realistic institutional failures. Each case shows:
+The `failure_cases/` directory contains post-mortems of realistic institutional failures, modeled on patterns from SEC enforcement actions and regulatory events. Each case shows what a problematic document looked like and what the engine detects. Each case shows:
 - The memo that caused the problem
 - What went wrong (the enforcement/litigation timeline)
 - What RedFlag would have caught
@@ -255,15 +253,9 @@ The `failure_cases/` directory contains detailed post-mortems of realistic insti
 
 **RedFlag Detection:** HIGH - Certainty language, unverified statistics, single-point price target
 
-### The Core Insight
+### Common Failure Patterns
 
-> **Standard LLMs act like Junior Analysts:** They focus on the *Thesis* but miss the *Path* (compliance, market structure, legal liability).
->
-> **Funds don't fail because of bad ideas.** They fail because of:
-> - MNPI they didn't recognize as MNPI
-> - Defamation they thought was "just internal"
-> - Hallucinations they didn't verify
-> - Regulatory arbitrage they didn't understand
+The failure cases illustrate a recurring pattern: compliance failures are often not recognized as such at the time. The specific failure modes documented here include MNPI that was not identified as such, defamatory language in internal documents, unverified statistics from LLM-generated content, and cross-border regulatory conflicts. Each case shows what the engine flags and what a compliant alternative looks like.
 
 ---
 
