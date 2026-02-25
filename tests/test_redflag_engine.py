@@ -399,3 +399,117 @@ class TestConfigOverride:
         flags = [f for f in result["flags"] if f["id"] == "EXPERT_NETWORK_STEERING"]
         assert len(flags) == 1
         assert flags[0]["severity"] == "MEDIUM"
+
+
+class TestSellSideBypass:
+    """Sell-side research should suppress MNPI rules.
+
+    The MNPI compliance burden for published sell-side research sits with
+    the issuing firm's compliance department, not the buy-side reader.
+    Portfolio construction flags should still fire.
+    """
+
+    @pytest.fixture
+    def analyzer(self):
+        return RedFlagAnalyzer()
+
+    def test_sellside_mnpi_suppressed(self, analyzer):
+        """Goldman research mentioning earnings/guidance -> zero MNPI flags."""
+        text = """
+        Goldman Sachs Equity Research
+        We initiate coverage on BioPharm Inc with a Buy rating.
+        Price target $85. Preliminary results from their Phase 3 trial
+        suggest strong efficacy. Earnings are expected to inflect in Q3.
+        An insider at the company confirmed demand trends.
+        """
+        result = analyzer.analyze(text)
+        flag_ids = [f["id"] for f in result["flags"]]
+        assert "MNPI_TIPPING_RISK" not in flag_ids
+        assert result["sellside_source"]["detected"] is True
+        assert result["sellside_source"]["firm"] == "goldman sachs"
+
+    def test_sellside_expert_calls_suppressed(self, analyzer):
+        """Sell-side with 15 expert calls -> no EXPERT_NETWORK_STEERING."""
+        text = """
+        Morgan Stanley Equity Research
+        After 15 one-hour calls with industry experts, we maintain rating
+        of Overweight with a price target of $120.
+        """
+        result = analyzer.analyze(text)
+        flag_ids = [f["id"] for f in result["flags"]]
+        assert "EXPERT_NETWORK_STEERING" not in flag_ids
+        assert result["sellside_source"]["detected"] is True
+
+    def test_sellside_portfolio_flags_still_fire(self, analyzer):
+        """Sell-side research with crowding language -> flag still fires."""
+        text = """
+        Goldman Sachs Equity Research
+        Price target $50. We initiate coverage with an Overweight rating.
+        The stock is the most held short name in the sector per 13F filings.
+        We see short squeeze potential.
+        """
+        result = analyzer.analyze(text)
+        flag_ids = [f["id"] for f in result["flags"]]
+        assert "CROWDING_ENDOGENOUS_RISK" in flag_ids
+        assert "MNPI_TIPPING_RISK" not in flag_ids
+
+    def test_stray_bank_mention_no_bypass(self, analyzer):
+        """Bank name in a buy-side memo without sell-side language -> flags fire."""
+        text = """
+        Internal Research Memo
+        Goldman Sachs recommends BPHI as a Buy. However our own
+        channel checks reveal an insider told me the trial data
+        was leaked to select investors. Preliminary results look strong.
+        """
+        result = analyzer.analyze(text)
+        flag_ids = [f["id"] for f in result["flags"]]
+        assert "MNPI_TIPPING_RISK" in flag_ids
+        assert result["sellside_source"]["detected"] is False
+
+    def test_independent_research_shop(self, analyzer):
+        """Bernstein research with initiate coverage -> sell-side detected."""
+        text = """
+        Bernstein Research
+        We initiate coverage on TechCorp with an Outperform rating
+        and a price target of $200. Earnings momentum is accelerating.
+        """
+        result = analyzer.analyze(text)
+        flag_ids = [f["id"] for f in result["flags"]]
+        assert "MNPI_TIPPING_RISK" not in flag_ids
+        assert result["sellside_source"]["detected"] is True
+        assert result["sellside_source"]["firm"] == "bernstein"
+
+    def test_sellside_metadata_in_output(self, analyzer):
+        """Verify sellside_source dict structure when detected."""
+        text = """
+        UBS Equity Research
+        We initiate coverage with a Buy rating. Price target CHF 45.
+        """
+        result = analyzer.analyze(text)
+        ss = result["sellside_source"]
+        assert ss["detected"] is True
+        assert ss["firm"] == "ubs"
+        assert "evidence" in ss
+        assert "suppressed_rules" in ss
+        assert "MNPI_TIPPING_RISK" in ss["suppressed_rules"]
+        assert "EXPERT_NETWORK_STEERING" in ss["suppressed_rules"]
+
+    def test_sellside_not_detected_output(self, analyzer):
+        """Verify sellside_source dict when NOT detected."""
+        text = "Based on public filings, we see 15% upside for TECHCORP."
+        result = analyzer.analyze(text)
+        ss = result["sellside_source"]
+        assert ss["detected"] is False
+
+    def test_cross_border_still_fires_for_sellside(self, analyzer):
+        """Cross-border inducement flags even on sell-side source."""
+        text = """
+        Barclays Equity Research
+        Price target 12 GBP. We initiate coverage on EuroTech.
+        Our London analyst arranged corporate access with the CEO
+        using soft dollars via CSA arrangement in France.
+        """
+        result = analyzer.analyze(text)
+        flag_ids = [f["id"] for f in result["flags"]]
+        assert "CROSS_BORDER_INDUCEMENT" in flag_ids
+        assert "MNPI_TIPPING_RISK" not in flag_ids

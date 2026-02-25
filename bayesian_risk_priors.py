@@ -23,9 +23,8 @@ References:
 
 from __future__ import annotations
 
-from dataclasses import dataclass, field
-from typing import Any, Dict, List, Tuple
-
+from dataclasses import dataclass
+from typing import Any, Dict, List
 
 # ---------------------------------------------------------------------------
 # Subject area definitions
@@ -57,6 +56,7 @@ for _area, _rules in SUBJECT_AREAS.items():
 # Beta-binomial prior
 # ---------------------------------------------------------------------------
 
+
 @dataclass
 class BetaPrior:
     """Beta distribution prior for a single detection rule.
@@ -84,7 +84,7 @@ class BetaPrior:
     @property
     def uncertainty(self) -> float:
         """Standard deviation of the prior."""
-        return self.variance ** 0.5
+        return self.variance**0.5
 
     def posterior(self, observed: int, total: int) -> "BetaPrior":
         """Bayesian update: return posterior after observing data.
@@ -123,7 +123,6 @@ DEFAULT_PRIORS: Dict[str, BetaPrior] = {
     "EXPERT_NETWORK_STEERING": BetaPrior(2.0, 5.0, "EXPERT_NETWORK_STEERING", "compliance"),
     "MNPI_TIPPING_RISK": BetaPrior(3.0, 4.0, "MNPI_TIPPING_RISK", "compliance"),
     "CROSS_BORDER_INDUCEMENT": BetaPrior(1.5, 8.0, "CROSS_BORDER_INDUCEMENT", "compliance"),
-
     # Portfolio/risk rules — moderate prior risk
     "OPTIONS_LEVERAGE_TRAP": BetaPrior(1.5, 6.0, "OPTIONS_LEVERAGE_TRAP", "portfolio"),
     "BETA_NEUTRALITY_FALLACY": BetaPrior(1.0, 7.0, "BETA_NEUTRALITY_FALLACY", "portfolio"),
@@ -136,6 +135,7 @@ DEFAULT_PRIORS: Dict[str, BetaPrior] = {
 # ---------------------------------------------------------------------------
 # Bayesian analysis
 # ---------------------------------------------------------------------------
+
 
 @dataclass
 class AuditFocusItem:
@@ -173,12 +173,8 @@ class BayesianAnalysis:
         return {
             "total_rules": self.total_rules,
             "flags_fired": self.flags_fired,
-            "subject_area_risks": {
-                k: round(v, 4) for k, v in self.subject_area_risks.items()
-            },
-            "posteriors": {
-                k: v.to_dict() for k, v in self.posteriors.items()
-            },
+            "subject_area_risks": {k: round(v, 4) for k, v in self.subject_area_risks.items()},
+            "posteriors": {k: v.to_dict() for k, v in self.posteriors.items()},
             "audit_focus": [item.to_dict() for item in self.audit_focus],
         }
 
@@ -241,14 +237,16 @@ def rank_audit_focus(
     for rule_id, posterior in posteriors.items():
         risk = posterior.mean
         unc = posterior.uncertainty
-        items.append(AuditFocusItem(
-            rule_id=rule_id,
-            subject_area=posterior.subject_area,
-            posterior_risk=risk,
-            uncertainty=unc,
-            priority_score=risk * unc,
-            flag_fired=rule_id in fired_rule_ids,
-        ))
+        items.append(
+            AuditFocusItem(
+                rule_id=rule_id,
+                subject_area=posterior.subject_area,
+                posterior_risk=risk,
+                uncertainty=unc,
+                priority_score=risk * unc,
+                flag_fired=rule_id in fired_rule_ids,
+            )
+        )
 
     items.sort(key=lambda x: x.priority_score, reverse=True)
     return items

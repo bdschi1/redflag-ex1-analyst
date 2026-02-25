@@ -1,3 +1,7 @@
+# Example: Cross-border regulatory violation (MiFID II soft-dollar inducement)
+# Expected gate: AUTO_REJECT
+# Expected flags: CROSS_BORDER_INDUCEMENT
+
 EuroTech AG - Corporate Access Trip
 Date: Q1 Planning
 Analyst: London Desk

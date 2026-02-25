@@ -2,6 +2,22 @@
 
 All notable changes to FinGuard-Red are documented here.
 
+## [0.2.1] - 2026-02-25
+
+### Added
+- **Bayesian risk priors** — `bayesian_risk_priors.py` with beta-binomial conjugate priors for each detection rule, enabling probabilistic audit focus narrowing. Inspired by AuditAgent (2025).
+- **`--bayesian` CLI flag** — includes posterior distributions, subject area risk aggregation, and audit focus ranking in JSON output.
+- **Bayesian analysis in Streamlit dashboard** — expander section showing subject area risk bars and prioritized audit focus table.
+- **55 Bayesian module tests** — total suite now at 157 tests across 5 test files.
+- `bayesian_risk_priors.py` and `app_redteam.py` added to CI lint targets.
+- `CONTRIBUTING.md` contributor guide.
+
+### Fixed
+- `build-backend` in `pyproject.toml` changed from legacy `setuptools.backends._legacy:_Backend` to standard `setuptools.build_meta`.
+- Engine version now reads from package metadata (`importlib.metadata`) instead of hardcoded string.
+- LICENSE copyright name formatting (removed bracket artifacts).
+- `.gitignore` hardened with missing patterns (`*.so`, `*.egg`, `.eggs/`, `*.whl`, `*.tar.gz`, `.tox/`, `.mypy_cache/`).
+
 ## [0.2.0] - 2026-02-07
 
 ### Added

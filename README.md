@@ -6,6 +6,8 @@
 
 > **Objective:** General-purpose AI safety benchmarks miss institutional-finance nuance. FinGuard-Red provides a **deterministic RedFlag gate** and **"Golden Data" adversarial scenarios** to catch subtle but catastrophic errors — from **Regulatory Arbitrage** (MiFID II vs. SEC) to **Endogenous Risk** (crowded exits).
 
+**Built for the buy side.** This tool is designed for asset managers, hedge funds, and buy-side research teams. Published sell-side research from established firms (Goldman Sachs, Morgan Stanley, etc.) and SEC filings are assumed to carry zero MNPI risk — the compliance burden for those documents sits with the issuing firm, not the reader. When sell-side research is detected, MNPI-related flags are automatically suppressed; portfolio construction flags remain active.
+
 ---
 
 ## 📂 Project Structure
@@ -18,49 +20,63 @@
 
 - **`run_redflag.py`** — CLI entry point (the **<60s runnable** gate).
 
+- **`bayesian_risk_priors.py`** — Beta-binomial conjugate priors for each detection rule, enabling probabilistic audit focus narrowing. Integrated into CLI (`--bayesian`) and dashboard.
+
 - **`app_redteam.py`** — Streamlit dashboard containing:
   - file upload with PDF/DOCX/TXT support + boilerplate toggle
+  - Bayesian risk prior analysis with audit focus ranking
   - adversarial evaluation scenarios ("Golden Data")
   - visual analysis of failure modes
 
-- **`analyst_note.txt`** — Example input for the CLI.
+- **`analyst_note.txt`** — Example input for the CLI (intentionally adversarial — produces AUTO_REJECT).
 
 - **`pyproject.toml`** / **`requirements.txt`** — Python packaging and dependencies.
 
 ---
 
-## 🎯 The "Golden" Benchmarks
+## 🎯 The "Golden" Benchmarks (12 Scenarios)
 
-This framework tests failure modes that standard RLHF training data often misses.
+This framework tests failure modes that standard RLHF training data often misses, across four categories.
 
-### 1) Regulatory & Compliance Nuance
-- **Steering vs. Mosaic Trap**
-- **Cross-Border Regulatory Arbitrage**
-- **MNPI / Tipping Risk**
-- **Success Risk / Risk Limit Traps**
+### 1) Compliance & MNPI
+- **MNPI & Tipping** — Steering vs. Mosaic Theory; Dirks v. SEC tipping framework
+- **Reg FD & Selective Disclosure** — corporate officer selective disclosure, recipient duty to abstain
+- **Cross-Border Regulatory Arbitrage** — MiFID II Article 24 vs. Section 28(e) jurisdictional conflict
 
 ### 2) Portfolio Construction & Market Mechanics
-- **Liquidity & Basis Risk**
-- **Momentum Crashes (Beta-neutral fallacy)**
-- **Optimization Trap (MVO / estimation error maximization)**
-- **Endogenous Risk (Crowded exits)**
+- **Options & Event Risk** — IV crush, vega/theta decay, success risk (beta expansion near max gross)
+- **Factor Risk & Beta Fallacy** — beta-zero books exposed to quality/junk factor reversals (cf. Aug 2007)
+- **Crowding & Endogenous Risk** — short interest, days-to-cover, Brunnermeier-Pedersen liquidity spirals
+- **Liquidity & Basis Mismatch** — illiquid long / liquid ETF hedge; crisis correlation breakdown
+- **MVO Optimizer Trap** — Michaud (1989) estimation error maximization; underdetermined covariance
+
+### 3) Process & Governance Failures
+- **Overconfidence & Certainty Language** — "100% confident," "sure thing," "can't lose" as predictors of catastrophic loss
+- **Position Concentration** — single-name binary-catalyst risk; PM self-granting exceptions to risk limits
+
+### 4) Fund-Level Structural Risks
+- **Short-and-Distort** — unverified defamatory claims in activist short reports; manipulation liability
+- **Redemption & Liquidity Mismatch** — adverse selection death spiral when redemptions force selling liquid positions first (cf. Woodford 2019)
+
+These are the failure modes that get analysts fired, funds shut down, or PMs indicted — and that standard AI safety benchmarks don't test for.
 
 ---
 
 ## 🚀 Quickstart
 
-### Prerequisites
-- Python 3.9+
-
-### Install
 ```bash
-pip install -r requirements.txt
-```
-
-Or install as a package (editable mode):
-```bash
+git clone https://github.com/bdschi1/redflag-ex1-analyst.git
+cd redflag_ex1_analyst
+python -m venv .venv && source .venv/bin/activate   # Windows: .venv\Scripts\activate
 pip install -e ".[test]"
+
+# Run against the included sample note (expects AUTO_REJECT):
+redflag --input analyst_note.txt --pretty
 ```
+
+> After `pip install -e .`, the `redflag` command is available as a shorter alias for `python run_redflag.py`.
+
+**Alternative (no editable install):** `pip install -r requirements.txt` installs all dependencies (core + dashboard + test) as a convenience. See the comment header in that file for selective install options.
 
 ---
 
@@ -69,14 +85,22 @@ pip install -e ".[test]"
 Run the engine against any **.txt, .pdf, or .docx** file (LLM draft, analyst note, IC memo, sell-side research PDF).
 
 ```bash
-# Analyze a text file
-python3 run_redflag.py --input analyst_note.txt --pretty
+# Analyze files
+redflag -i analyst_note.txt -p
+redflag -i research_report.pdf -p
+redflag -i ic_memo.docx -p
 
-# Analyze a PDF (sell-side research, 3rd party report, etc.)
-python3 run_redflag.py --input research_report.pdf --pretty
+# Pipe JSON to stdout (for jq, scripts, etc.)
+redflag -i analyst_note.txt --stdout | jq .overall
 
-# Analyze a DOCX
-python3 run_redflag.py --input ic_memo.docx --pretty
+# Include Bayesian risk prior analysis
+redflag -i analyst_note.txt --bayesian -p
+
+# Disable boilerplate stripping
+redflag -i report.pdf --no-filter -p
+
+# Write to a specific file
+redflag -i analyst_note.txt -o report.json -p
 ```
 
 ### Boilerplate filtering (on by default)
@@ -85,30 +109,37 @@ Standard institutional disclaimers ("This report is for institutional investors 
 
 The filter uses a **protected-keyword safety mechanism**: any paragraph containing risk-relevant terms (e.g., "insider", "off the record", "soft dollar") is **never removed**, even if it overlaps with boilerplate patterns.
 
-```bash
-# Disable the boilerplate filter
-python3 run_redflag.py --input report.pdf --no-filter --pretty
+### Sample output
+
+```json
+{
+  "overall": {
+    "severity": "CRITICAL",
+    "score": 100,
+    "gate_decision": "AUTO_REJECT",
+    "recommended_action": "AUTO_REJECT: block execution; escalate to Compliance/PM; preserve artifacts and sources."
+  },
+  "flags": [
+    {
+      "id": "EXPERT_NETWORK_STEERING",
+      "title": "Expert network over-contact / potential steering",
+      "severity": "MEDIUM",
+      "score": 50,
+      "evidence": ["10 one-hour calls"],
+      "explanation": "High-volume repeated expert interactions elevate 'steering vs. mosaic' risk...",
+      "recommended_action": "PM_REVIEW + Compliance: require documented research plan, transcripts..."
+    }
+  ]
+}
 ```
 
-### Output
-The CLI writes a **JSON report** containing:
-- `flags`: risk flags with `severity`, `score`, `evidence`, and recommended actions
-- `overall`: aggregate `severity`, `score`, plus a **gate decision**:
-  - `PASS`
-  - `PM_REVIEW`
-  - `AUTO_REJECT`
-- `preprocessing`: what the boilerplate filter removed (chars, sections)
+The full JSON also includes `input` metadata (format, chars, page count), `preprocessing` stats (boilerplate chars/sections removed), and optionally `bayesian_analysis` (posterior distributions, audit focus ranking).
 
 ### Exit codes (useful for CI / workflow gating)
 - `0`  → `PASS`
 - `10` → `PM_REVIEW`
 - `20` → `AUTO_REJECT`
-
-To write output to a specific file:
-
-```bash
-python3 run_redflag.py --input analyst_note.txt --output report.json --pretty
-```
+- `2`  → Error (missing file, unsupported format, etc.)
 
 ---
 
@@ -131,6 +162,8 @@ flowchart TD
   B -->|PM_REVIEW| D[PM Review + Required Risk/Compliance Checks]
   B -->|AUTO_REJECT| E[Auto-Reject + Compliance Escalation]
 ```
+
+The idea: every research note passes through this gate before a PM sees it. Clean notes go through, borderline notes get extra review, and high-risk notes are blocked automatically.
 
 ### Practical usage patterns
 - **Pre-IC gate:** run on drafts before they hit the PM / IC channel.
@@ -248,11 +281,14 @@ redflag_ex1_analyst/
 ├── redflag_engine.py        # Core detection engine (8 rules)
 ├── document_loader.py       # PDF / DOCX / TXT loader
 ├── boilerplate_filter.py    # Institutional boilerplate stripper
+├── bayesian_risk_priors.py  # Beta-binomial priors for audit focus
 ├── run_redflag.py           # CLI entry point (<60s runnable)
 ├── app_redteam.py           # Streamlit dashboard
 ├── pyproject.toml           # Python packaging & tool config
 ├── requirements.txt         # Dependency pins
-├── analyst_note.txt         # Sample input
+├── analyst_note.txt         # Sample input (adversarial)
+├── CHANGELOG.md             # Version history
+├── CONTRIBUTING.md          # Contributor guide
 ├── examples/
 │   ├── analyst_note_clean.txt
 │   ├── analyst_note_risky.txt
@@ -267,9 +303,10 @@ redflag_ex1_analyst/
 │   └── 03_hallucination.txt
 ├── tests/
 │   ├── conftest.py                # Dynamic PDF/DOCX fixture generation
-│   ├── test_redflag_engine.py     # 42 engine tests
+│   ├── test_redflag_engine.py     # 50 engine tests (incl. sell-side bypass)
 │   ├── test_document_loader.py    # 18 loader tests
 │   ├── test_boilerplate_filter.py # 32 filter tests (incl. safety)
+│   ├── test_bayesian_priors.py    # 55 Bayesian module tests
 │   └── test_integration.py        # 10 end-to-end pipeline tests
 └── .github/workflows/ci.yml  # CI: test, lint, integration
 ```

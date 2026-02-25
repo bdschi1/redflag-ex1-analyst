@@ -13,22 +13,22 @@ import pytest
 sys.path.insert(0, os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 
 from bayesian_risk_priors import (
-    SUBJECT_AREAS,
-    RULE_TO_SUBJECT,
     DEFAULT_PRIORS,
-    BetaPrior,
+    RULE_TO_SUBJECT,
+    SUBJECT_AREAS,
     AuditFocusItem,
     BayesianAnalysis,
-    compute_posteriors,
+    BetaPrior,
     aggregate_subject_area_risk,
-    rank_audit_focus,
     analyze_with_priors,
+    compute_posteriors,
+    rank_audit_focus,
 )
-
 
 # ---------------------------------------------------------------------------
 # BetaPrior
 # ---------------------------------------------------------------------------
+
 
 class TestBetaPrior:
     """Test the BetaPrior dataclass and its methods."""
@@ -58,7 +58,7 @@ class TestBetaPrior:
 
     def test_uncertainty_is_sqrt_variance(self):
         bp = BetaPrior(3.0, 4.0, "TEST")
-        assert bp.uncertainty == pytest.approx(bp.variance ** 0.5)
+        assert bp.uncertainty == pytest.approx(bp.variance**0.5)
 
     def test_posterior_observed_increases_alpha(self):
         prior = BetaPrior(2.0, 5.0, "TEST")
@@ -98,8 +98,12 @@ class TestBetaPrior:
         bp = BetaPrior(2.0, 5.0, "TEST", "compliance")
         d = bp.to_dict()
         assert set(d.keys()) == {
-            "rule_id", "subject_area", "alpha", "beta",
-            "prior_risk", "uncertainty",
+            "rule_id",
+            "subject_area",
+            "alpha",
+            "beta",
+            "prior_risk",
+            "uncertainty",
         }
 
     def test_to_dict_values_rounded(self):
@@ -113,6 +117,7 @@ class TestBetaPrior:
 # ---------------------------------------------------------------------------
 # Subject areas and default priors
 # ---------------------------------------------------------------------------
+
 
 class TestSubjectAreas:
     """Test subject area definitions and mappings."""
@@ -166,8 +171,7 @@ class TestDefaultPriors:
     def test_mnpi_highest_compliance_prior(self):
         """MNPI tipping risk should have highest compliance prior mean."""
         compliance_priors = {
-            k: v for k, v in DEFAULT_PRIORS.items()
-            if v.subject_area == "compliance"
+            k: v for k, v in DEFAULT_PRIORS.items() if v.subject_area == "compliance"
         }
         mnpi = compliance_priors["MNPI_TIPPING_RISK"]
         for rule_id, prior in compliance_priors.items():
@@ -179,6 +183,7 @@ class TestDefaultPriors:
 # ---------------------------------------------------------------------------
 # compute_posteriors
 # ---------------------------------------------------------------------------
+
 
 class TestComputePosteriors:
     """Test posterior computation."""
@@ -234,6 +239,7 @@ class TestComputePosteriors:
 # aggregate_subject_area_risk
 # ---------------------------------------------------------------------------
 
+
 class TestAggregateSubjectAreaRisk:
     """Test subject area risk aggregation."""
 
@@ -269,6 +275,7 @@ class TestAggregateSubjectAreaRisk:
 # ---------------------------------------------------------------------------
 # rank_audit_focus
 # ---------------------------------------------------------------------------
+
 
 class TestRankAuditFocus:
     """Test audit focus ranking."""
@@ -324,6 +331,7 @@ class TestRankAuditFocus:
 # analyze_with_priors (main entry point)
 # ---------------------------------------------------------------------------
 
+
 class TestAnalyzeWithPriors:
     """Test the main entry point."""
 
@@ -340,9 +348,7 @@ class TestAnalyzeWithPriors:
         assert result.total_rules == 8
 
     def test_one_flag(self):
-        result = analyze_with_priors(
-            self._make_redflag_result(["MNPI_TIPPING_RISK"])
-        )
+        result = analyze_with_priors(self._make_redflag_result(["MNPI_TIPPING_RISK"]))
         assert result.flags_fired == 1
 
     def test_multiple_flags(self):
@@ -362,9 +368,7 @@ class TestAnalyzeWithPriors:
         assert "portfolio" in result.subject_area_risks
 
     def test_audit_focus_sorted(self):
-        result = analyze_with_priors(
-            self._make_redflag_result(["MNPI_TIPPING_RISK"])
-        )
+        result = analyze_with_priors(self._make_redflag_result(["MNPI_TIPPING_RISK"]))
         scores = [item.priority_score for item in result.audit_focus]
         assert scores == sorted(scores, reverse=True)
 
@@ -372,8 +376,11 @@ class TestAnalyzeWithPriors:
         result = analyze_with_priors(self._make_redflag_result([]))
         d = result.to_dict()
         assert set(d.keys()) == {
-            "total_rules", "flags_fired", "subject_area_risks",
-            "posteriors", "audit_focus",
+            "total_rules",
+            "flags_fired",
+            "subject_area_risks",
+            "posteriors",
+            "audit_focus",
         }
 
     def test_to_dict_posteriors_nested(self):
@@ -407,6 +414,7 @@ class TestAnalyzeWithPriors:
 # ---------------------------------------------------------------------------
 # BayesianAnalysis
 # ---------------------------------------------------------------------------
+
 
 class TestBayesianAnalysis:
     """Test BayesianAnalysis dataclass."""

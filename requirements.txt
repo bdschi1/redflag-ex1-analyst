@@ -1,8 +1,12 @@
+# Convenience file: installs ALL dependencies (core + dashboard + test).
+# For selective installs, use pyproject.toml extras instead:
+#   pip install -e "."            # core only
+#   pip install -e ".[test]"      # core + test
+#   pip install -e ".[dashboard]" # core + dashboard
+#   pip install -e ".[dev]"       # everything + ruff
+
 # Core dependencies
 pandas>=2.1,<3
-python-dotenv>=1.0,<2
-
-# Document parsing (PDF/DOCX input support)
 pdfplumber>=0.10,<1
 python-docx>=1.1,<2
 

@@ -1,3 +1,7 @@
+# Example: Clean analyst note (public data only, no red flags)
+# Expected gate: PASS
+# Expected flags: none
+
 ACME Corp (ACME) - Earnings Preview
 Date: Q4 2024
 Analyst: J. Smith

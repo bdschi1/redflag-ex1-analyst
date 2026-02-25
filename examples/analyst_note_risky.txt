@@ -1,3 +1,7 @@
+# Example: High-risk analyst note (intentionally adversarial)
+# Expected gate: AUTO_REJECT
+# Expected flags: MNPI_TIPPING_RISK, EXPERT_NETWORK_STEERING, CROWDING_ENDOGENOUS_RISK, OPTIONS_LEVERAGE_TRAP
+
 BioPharm Inc (BPHI) - Clinical Trial Update
 Date: Confidential
 Analyst: Internal Use Only

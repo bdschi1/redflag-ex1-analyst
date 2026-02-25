@@ -23,6 +23,13 @@ env/
 build/
 dist/
 *.egg-info/
+*.egg
+*.so
+.eggs/
+*.whl
+*.tar.gz
+.tox/
+.mypy_cache/
 
 # --- Streamlit ---
 .streamlit/
@@ -32,11 +39,15 @@ dist/
 .DS_Store?
 ._*
 Thumbs.db
+Desktop.ini
 
 # --- Data ---
 # Keep the benchmark CSV, but ignore temp exports
 *.tmp.csv
 finguard_redteam_report.csv
+
+# --- Logs ---
+logs/
 
 # --- Results & Outputs ---
 results/
@@ -58,9 +69,15 @@ htmlcov/
 *.swo
 *~
 
-# --- Large binary files (allow examples/ for demo PDFs) ---
+# --- Large binary / model files (allow examples/ for demo PDFs) ---
 *.pdf
 !examples/*.pdf
+*.pt
+*.bin
+*.safetensors
+*.gguf
+offload_temp/
+hf_cache/
 
 # --- Jupyter ---
 .ipynb_checkpoints/

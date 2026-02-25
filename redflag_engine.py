@@ -12,12 +12,84 @@ from __future__ import annotations
 import datetime as _dt
 import re
 from dataclasses import asdict, dataclass
+from importlib.metadata import version as _pkg_version
 from typing import Any, Dict, List
 
 # ----------------------------
 # Defaults / configuration
 # ----------------------------
 MAX_INPUT_CHARS = 500_000
+
+# ----------------------------
+# Sell-side source detection
+# ----------------------------
+# When a document is identified as published sell-side research, MNPI rules
+# are suppressed because the compliance burden sits with the issuing firm's
+# compliance department, not the buy-side reader.
+
+SELLSIDE_FIRMS = [
+    # Bulge bracket / major banks
+    "goldman sachs",
+    "morgan stanley",
+    "jp morgan",
+    "j.p. morgan",
+    "citigroup",
+    "citi research",
+    "bank of america",
+    "merrill lynch",
+    "barclays",
+    "ubs",
+    "credit suisse",
+    "deutsche bank",
+    "hsbc",
+    "jefferies",
+    "wells fargo",
+    "rbc capital",
+    "nomura",
+    # Independent / mid-cap research
+    "bernstein",
+    "wolfe research",
+    "cowen",
+    "piper sandler",
+    "raymond james",
+    "stifel",
+    "baird",
+    "oppenheimer",
+    "evercore isi",
+    "william blair",
+    "redburn",
+    "clsa",
+    "macquarie",
+    "keefe bruyette",
+    "td cowen",
+    "bmo capital",
+    "canaccord",
+    "needham",
+    "wedbush",
+    "leerink",
+    "guggenheim",
+    "truist",
+]
+
+SELLSIDE_LANGUAGE = [
+    "equity research",
+    "initiate coverage",
+    "initiating coverage",
+    "maintain rating",
+    "maintaining rating",
+    "upgrade to",
+    "downgrade to",
+    "price target",
+    "analyst certification",
+    "important disclosures",
+    "investment rating",
+    "sector rating",
+    "industry rating",
+    "this report has been prepared",
+    "this research report",
+]
+
+_MNPI_RULE_IDS = ["MNPI_TIPPING_RISK", "EXPERT_NETWORK_STEERING"]
 
 DEFAULT_THRESHOLDS = {
     "expert_network": {
@@ -94,17 +166,25 @@ class Flag:
 
 class RedFlagAnalyzer:
     """
-    Deterministic, rule-based analyzer.
+    Deterministic, rule-based analyzer for buy-side compliance workflows.
 
     IMPORTANT: This is intentionally conservative and biased toward flagging
     institutional blow-up risks (compliance, MNPI, portfolio construction traps).
+
+    Published sell-side research (Goldman Sachs, Morgan Stanley, etc.) and SEC
+    filings are assumed to carry zero MNPI risk — the compliance burden sits
+    with the issuing firm.  When sell-side source markers are detected, MNPI
+    rules are suppressed; portfolio construction flags remain active.
 
     Args:
         config: Optional dict to override DEFAULT_THRESHOLDS keys.
         max_input_chars: Override the global MAX_INPUT_CHARS limit.
     """
 
-    VERSION = "0.1.0"
+    try:
+        VERSION = _pkg_version("redflag-analyst")
+    except Exception:
+        VERSION = "0.2.1"
 
     def __init__(
         self,
@@ -122,14 +202,19 @@ class RedFlagAnalyzer:
             )
         normalized = self._normalize(text)
 
+        sellside = self._detect_sellside_source(normalized)
+
         flags: List[Flag] = []
 
-        # Compliance / MNPI
-        flags.extend(self._detect_expert_network_steering(normalized))
-        flags.extend(self._detect_mnpi_tipping(normalized))
-        flags.extend(self._detect_cross_border_soft_dollars(normalized))
+        # MNPI rules: suppressed for sell-side research (compliance burden
+        # is on the issuing firm, not the buy-side reader)
+        if not sellside["detected"]:
+            flags.extend(self._detect_expert_network_steering(normalized))
+            flags.extend(self._detect_mnpi_tipping(normalized))
 
-        # Portfolio / risk traps (still important for fund workflows)
+        # Cross-border + portfolio construction traps: always run
+        # (buy-side responsibility regardless of source)
+        flags.extend(self._detect_cross_border_soft_dollars(normalized))
         flags.extend(self._detect_options_leverage_trap(normalized))
         flags.extend(self._detect_beta_neutral_momentum_trap(normalized))
         flags.extend(self._detect_mvo_optimizer_trap(normalized))
@@ -144,6 +229,38 @@ class RedFlagAnalyzer:
             "timestamp_utc": _now_utc_iso(),
             "overall": overall,
             "flags": [asdict(f) for f in flags],
+            "sellside_source": sellside,
+        }
+
+    # ----------------------------
+    # Sell-side source detection
+    # ----------------------------
+    def _detect_sellside_source(self, text: str) -> Dict[str, Any]:
+        """Detect whether the document is published sell-side research.
+
+        Requires both a recognized firm name AND at least one sell-side
+        language pattern (e.g. "equity research", "price target").  A stray
+        mention of a bank name inside a buy-side memo does not trigger this.
+        """
+        matched_firm = None
+        for firm in SELLSIDE_FIRMS:
+            if firm in text:
+                matched_firm = firm
+                break
+
+        if matched_firm is None:
+            return {"detected": False}
+
+        lang_hits = [pat for pat in SELLSIDE_LANGUAGE if pat in text]
+        if not lang_hits:
+            return {"detected": False}
+
+        return {
+            "detected": True,
+            "firm": matched_firm,
+            "evidence": [matched_firm] + lang_hits[:4],
+            "note": "MNPI rules suppressed — compliance burden is on the issuing firm",
+            "suppressed_rules": list(_MNPI_RULE_IDS),
         }
 
     # ----------------------------

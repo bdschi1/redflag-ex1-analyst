@@ -26,7 +26,7 @@ jobs:
           python -m pip install --upgrade pip
           pip install pytest pytest-cov
           # Install main deps (but skip streamlit for faster CI)
-          pip install pandas python-dotenv pdfplumber python-docx fpdf2
+          pip install pandas pdfplumber python-docx fpdf2
 
       - name: Run tests with coverage
         run: |
@@ -59,10 +59,10 @@ jobs:
         run: pip install ruff
 
       - name: Ruff check
-        run: ruff check redflag_engine.py run_redflag.py document_loader.py boilerplate_filter.py tests/
+        run: ruff check redflag_engine.py run_redflag.py document_loader.py boilerplate_filter.py bayesian_risk_priors.py app_redteam.py tests/
 
       - name: Ruff format check
-        run: ruff format --check redflag_engine.py run_redflag.py document_loader.py boilerplate_filter.py tests/
+        run: ruff format --check redflag_engine.py run_redflag.py document_loader.py boilerplate_filter.py bayesian_risk_priors.py app_redteam.py tests/
 
   integration:
     runs-on: ubuntu-latest
@@ -78,7 +78,7 @@ jobs:
       - name: Install dependencies
         run: |
           python -m pip install --upgrade pip
-          pip install pandas python-dotenv pdfplumber python-docx
+          pip install pandas pdfplumber python-docx
 
       - name: Test all example files
         run: |
