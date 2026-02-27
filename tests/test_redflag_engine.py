@@ -414,7 +414,7 @@ class TestSellSideBypass:
         return RedFlagAnalyzer()
 
     def test_sellside_mnpi_suppressed(self, analyzer):
-        """Goldman research mentioning earnings/guidance -> zero MNPI flags."""
+        """Sell-side research mentioning earnings/guidance -> zero MNPI flags."""
         text = """
         Goldman Sachs Equity Research
         We initiate coverage on BioPharm Inc with a Buy rating.

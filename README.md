@@ -4,7 +4,7 @@
 
 A compliance scanning tool that checks analyst notes, research reports, and investment committee memos for regulatory red flags — MNPI (material non-public information — the core concern in insider trading law), conflicts of interest, and common institutional compliance violations. Each document is scored as PASS, PM_REVIEW, or AUTO_REJECT. The engine is deterministic and rule-based: same input, same output, no model variance.
 
-This tool is designed for asset managers, hedge funds, and buy-side research teams. Published sell-side research from established firms (Goldman Sachs, Morgan Stanley, etc.) and SEC filings are assumed to carry zero MNPI risk — the compliance burden for those documents sits with the issuing firm, not the reader. When sell-side research is detected, MNPI-related flags are automatically suppressed; portfolio construction flags remain active.
+This tool is designed for asset managers, hedge funds, and buy-side research teams. Published sell-side research and SEC filings are assumed to carry zero MNPI risk — the compliance burden for those documents sits with the issuing firm, not the reader. When sell-side research is detected, MNPI-related flags are automatically suppressed; portfolio construction flags remain active.
 
 This is a continually developed project. Detection rules, adversarial scenarios, and document format support expand over time as new compliance patterns are identified.
 

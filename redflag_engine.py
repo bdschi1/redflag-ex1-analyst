@@ -171,10 +171,10 @@ class RedFlagAnalyzer:
     IMPORTANT: This is intentionally conservative and biased toward flagging
     institutional blow-up risks (compliance, MNPI, portfolio construction traps).
 
-    Published sell-side research (Goldman Sachs, Morgan Stanley, etc.) and SEC
-    filings are assumed to carry zero MNPI risk — the compliance burden sits
-    with the issuing firm.  When sell-side source markers are detected, MNPI
-    rules are suppressed; portfolio construction flags remain active.
+    Published sell-side research and SEC filings are assumed to carry zero
+    MNPI risk — the compliance burden sits with the issuing firm.  When
+    sell-side source markers are detected, MNPI rules are suppressed;
+    portfolio construction flags remain active.
 
     Args:
         config: Optional dict to override DEFAULT_THRESHOLDS keys.

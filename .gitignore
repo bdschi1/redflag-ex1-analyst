@@ -1,5 +1,6 @@
 # --- Security (Critical) — NEVER commit these ---
 .env
+.env.*
 .env.local
 .env.*.local
 !.env.example
@@ -91,3 +92,5 @@ b-notes.md
 c-suite.md
 TECHNICAL_DOCUMENTATION.md
 .ignore
+
+HOW_IT_WORKS.md

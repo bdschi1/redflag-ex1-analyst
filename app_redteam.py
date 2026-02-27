@@ -637,7 +637,7 @@ with st.expander("ℹ️ About this Framework (Methodology & Business Impact)", 
     * **The Diminishing Return of Legitimate Inquiry:** We algorithmically flag when due diligence morphs into compliance risk (e.g., >10 hours with one source).
     * **The Event Path:** Tracing the trade lifecycle to spot traps like Volatility Crush or Liquidity Spirals.
 
-    **Built for the buy side.** This tool is designed for asset managers, hedge funds, and buy-side research teams. Published sell-side research from established firms (Goldman Sachs, Morgan Stanley, etc.) and SEC filings are assumed to carry zero MNPI risk — the compliance burden for those documents sits with the issuing firm, not the reader. When sell-side research is detected, MNPI-related flags are automatically suppressed.
+    **Built for the buy side.** This tool is designed for asset managers, hedge funds, and buy-side research teams. Published sell-side research and SEC filings are assumed to carry zero MNPI risk — the compliance burden for those documents sits with the issuing firm, not the reader. When sell-side research is detected, MNPI-related flags are automatically suppressed.
     """)
 
 st.divider()
