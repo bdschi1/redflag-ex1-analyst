@@ -6,6 +6,8 @@ A compliance scanning tool that checks analyst notes, research reports, and inve
 
 This tool is designed for asset managers, hedge funds, and buy-side research teams. Published sell-side research from established firms (Goldman Sachs, Morgan Stanley, etc.) and SEC filings are assumed to carry zero MNPI risk — the compliance burden for those documents sits with the issuing firm, not the reader. When sell-side research is detected, MNPI-related flags are automatically suppressed; portfolio construction flags remain active.
 
+This is a continually developed project. Detection rules, adversarial scenarios, and document format support expand over time as new compliance patterns are identified.
+
 ---
 
 ## 📂 Project Structure
@@ -143,22 +145,24 @@ The full JSON also includes `input` metadata (format, chars, page count), `prepr
 
 ## 2) Positioning as a gate in a PM workflow
 
-### Minimal workflow (ASCII)
 ```
-LLM Research Draft
-        ↓
-RedFlag Analyst (run_redflag.py)
-        ↓
-PM Review / Auto-Reject
-```
-
-### Expanded workflow (Mermaid)
-```mermaid
-flowchart TD
-  A[LLM Research Draft / Analyst Note] --> B[RedFlag Analyst Gate<br/>python run_redflag.py]
-  B -->|PASS| C[PM Review]
-  B -->|PM_REVIEW| D[PM Review + Required Risk/Compliance Checks]
-  B -->|AUTO_REJECT| E[Auto-Reject + Compliance Escalation]
+╔═══════════════════════════════════════════════════════════╗
+║              LLM RESEARCH DRAFT / ANALYST NOTE            ║
+║            analyst note · IC memo · research PDF          ║
+╚═══════════════════════════════╤═══════════════════════════╝
+                                ▼
+┌─ GATE ── RedFlag Analyst ────────────────────────────────┐
+│  run_redflag.py (deterministic rule engine)               │
+└──────────┬────────────────────┬───────────┬──────────────┘
+           ▼                    ▼           ▼
+       ┌──────┐          ┌──────────┐  ┌─────────────────┐
+       │ PASS │          │PM_REVIEW │  │  AUTO_REJECT +  │
+       │      │          │ + Risk / │  │  Compliance     │
+       │      │          │ Compliance│  │  Escalation     │
+       └──┬───┘          └────┬─────┘  └────────────────-┘
+          ▼                   ▼
+      PM Review          PM Review +
+                         Required Checks
 ```
 
 The idea: every research note passes through this gate before a PM sees it. Clean notes go through, borderline notes get extra review, and high-risk notes are blocked automatically.
@@ -314,16 +318,19 @@ This compliance tool draws on academic research in financial audit AI and advers
 - **Red-Teaming Financial AI / FinJailbreak** (Li, 2026) — 1,250 adversarial prompts across 5 financial malfeasance categories (market manipulation, insider trading, regulatory evasion, data privacy, unfair consumer practice). Validates the threat model this tool defends against. [AAAI 2026]
 - **Explainable AI in Finance** (Sotic & Radovanovic, 2024) — Comprehensive taxonomy of XAI methods for financial applications, including stakeholder-specific explainability requirements for regulators and compliance officers. [doi:10.20935/AcadAI8017]
 
+## Contributing
+
+Contributions welcome. Areas for improvement:
+- Additional detection rules and compliance patterns
+- New document format support
+- Enhanced Bayesian prior calibration
+- Extended adversarial scenario coverage
+
+## Status
+
+This project is under active, ongoing development. Core detection engine, document loading, and Bayesian priors are stable. New detection rules, document formats, and adversarial scenarios are added as compliance needs evolve.
+
 ## Notes / Disclaimer
 
 This repository is a **red teaming / control** artifact. It does not provide legal advice.
 Always route flagged items through your firm's Compliance policies and counsel.
-
----
-
-![Python](https://img.shields.io/badge/python-3.9+-3776AB?style=flat&logo=python&logoColor=white)
-
-![Streamlit](https://img.shields.io/badge/Streamlit-FF4B4B?style=flat&logo=streamlit&logoColor=white)
-![Pydantic](https://img.shields.io/badge/Pydantic-E92063?style=flat&logo=pydantic&logoColor=white)
-![PyMuPDF](https://img.shields.io/badge/PyMuPDF-009688?style=flat)
-![python-docx](https://img.shields.io/badge/python--docx-2B579A?style=flat&logo=microsoftword&logoColor=white)
