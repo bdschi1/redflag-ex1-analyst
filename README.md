@@ -8,6 +8,10 @@ This tool is designed for asset managers, hedge funds, and buy-side research tea
 
 This is a continually developed project. Detection rules, adversarial scenarios, and document format support expand over time as new compliance patterns are identified.
 
+**Key questions this project answers:**
+- *Does this document contain MNPI or other compliance red flags?*
+- *Should this be escalated for compliance review, or is it clean?*
+
 ---
 
 ## 📂 Project Structure
