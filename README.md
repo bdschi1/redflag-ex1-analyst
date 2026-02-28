@@ -324,17 +324,11 @@ This compliance tool draws on academic research in financial audit AI and advers
 
 ## Contributing
 
-Contributions welcome. Areas for improvement:
-- Additional detection rules and compliance patterns
-- New document format support
-- Enhanced Bayesian prior calibration
-- Extended adversarial scenario coverage
-
-## Status
-
-This project is under active, ongoing development. Core detection engine, document loading, and Bayesian priors are stable. New detection rules, document formats, and adversarial scenarios are added as compliance needs evolve.
+Under active development. Contributions welcome — areas for improvement include detection rules, document format support, Bayesian prior calibration, and adversarial scenarios.
 
 ## Notes / Disclaimer
 
 This repository is a **red teaming / control** artifact. It does not provide legal advice.
 Always route flagged items through your firm's Compliance policies and counsel.
+
+***Curiosity compounds. Rigor endures.***
