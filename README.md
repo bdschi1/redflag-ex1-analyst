@@ -303,4 +303,6 @@ Under active development. Contributions welcome — areas for improvement includ
 
 MIT
 
+---
+
 ***Curiosity compounds. Rigor endures.***
