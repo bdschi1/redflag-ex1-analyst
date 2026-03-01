@@ -14,59 +14,7 @@ This is a continually developed project. Detection rules, adversarial scenarios,
 
 ---
 
-## 📂 Project Structure
-
-- **`redflag_engine.py`** — Lightweight, deterministic **rule-based** engine for flagging high-risk patterns in analyst notes / LLM drafts.
-
-- **`document_loader.py`** — Unified document loader: accepts **.txt, .pdf, and .docx** files and extracts plain text.
-
-- **`boilerplate_filter.py`** — Strips standard institutional research boilerplate (disclaimers, analyst certifications, distribution notices) before analysis. **On by default**, with protected-keyword safety to never hide real risk content.
-
-- **`run_redflag.py`** — CLI entry point (the **<60s runnable** gate).
-
-- **`bayesian_risk_priors.py`** — Beta-binomial conjugate priors for each detection rule, enabling probabilistic audit focus narrowing. Integrated into CLI (`--bayesian`) and dashboard.
-
-- **`app_redteam.py`** — Streamlit dashboard containing:
-  - file upload with PDF/DOCX/TXT support + boilerplate toggle
-  - Bayesian risk prior analysis with audit focus ranking
-  - adversarial evaluation scenarios ("Golden Data")
-  - visual analysis of failure modes
-
-- **`analyst_note.txt`** — Example input for the CLI (intentionally adversarial — produces AUTO_REJECT).
-
-- **`pyproject.toml`** / **`requirements.txt`** — Python packaging and dependencies.
-
----
-
-## 🎯 The "Golden" Benchmarks (12 Scenarios)
-
-This framework tests failure modes that standard RLHF training data often misses, across four categories. In plain terms: these are 12 structured test inputs designed to verify that the engine correctly flags specific compliance and risk scenarios — covering regulatory violations, portfolio construction errors, governance failures, and fund-level structural risks.
-
-### 1) Compliance & MNPI
-- **MNPI & Tipping** — Steering vs. Mosaic Theory; Dirks v. SEC tipping framework
-- **Reg FD & Selective Disclosure** — corporate officer selective disclosure, recipient duty to abstain
-- **Cross-Border Regulatory Arbitrage** — MiFID II Article 24 vs. Section 28(e) jurisdictional conflict
-
-### 2) Portfolio Construction & Market Mechanics
-- **Options & Event Risk** — IV crush, vega/theta decay, success risk (beta expansion near max gross)
-- **Factor Risk & Beta Fallacy** — beta-zero books exposed to quality/junk factor reversals (cf. Aug 2007)
-- **Crowding & Endogenous Risk** — short interest, days-to-cover, Brunnermeier-Pedersen liquidity spirals
-- **Liquidity & Basis Mismatch** — illiquid long / liquid ETF hedge; crisis correlation breakdown
-- **MVO Optimizer Trap** — Michaud (1989) estimation error maximization; underdetermined covariance
-
-### 3) Process & Governance Failures
-- **Overconfidence & Certainty Language** — "100% confident," "sure thing," "can't lose" as predictors of catastrophic loss
-- **Position Concentration** — single-name binary-catalyst risk; PM self-granting exceptions to risk limits
-
-### 4) Fund-Level Structural Risks
-- **Short-and-Distort** — unverified defamatory claims in activist short reports; manipulation liability
-- **Redemption & Liquidity Mismatch** — adverse selection death spiral when redemptions force selling liquid positions first (cf. Woodford 2019)
-
-These scenarios cover compliance failures commonly flagged in SEC enforcement actions and regulatory examinations, as well as portfolio construction errors that standard AI safety benchmarks do not address.
-
----
-
-## 🚀 Quickstart
+## Quick Start
 
 ```bash
 git clone https://github.com/bdschi1/redflag-ex1-analyst.git
@@ -82,9 +30,7 @@ redflag --input analyst_note.txt --pretty
 
 **Alternative (no editable install):** `pip install -r requirements.txt` installs all dependencies (core + dashboard + test) as a convenience. See the comment header in that file for selective install options.
 
----
-
-## 1) Run the RedFlag gate in <60 seconds
+### CLI Usage
 
 Run the engine against any **.txt, .pdf, or .docx** file (LLM draft, analyst note, IC memo, sell-side research PDF).
 
@@ -107,13 +53,13 @@ redflag -i report.pdf --no-filter -p
 redflag -i analyst_note.txt -o report.json -p
 ```
 
-### Boilerplate filtering (on by default)
+### Boilerplate Filtering (on by default)
 
 Standard institutional disclaimers ("This report is for institutional investors only", analyst certifications, distribution notices, etc.) are **automatically stripped** before analysis. This prevents false positives from legal boilerplate while preserving all substantive content.
 
 The filter uses a **protected-keyword safety mechanism**: any paragraph containing risk-relevant terms (e.g., "insider", "off the record", "soft dollar") is **never removed**, even if it overlaps with boilerplate patterns.
 
-### Sample output
+### Sample Output
 
 ```json
 {
@@ -139,15 +85,52 @@ The filter uses a **protected-keyword safety mechanism**: any paragraph containi
 
 The full JSON also includes `input` metadata (format, chars, page count), `preprocessing` stats (boilerplate chars/sections removed), and optionally `bayesian_analysis` (posterior distributions, audit focus ranking).
 
-### Exit codes (useful for CI / workflow gating)
+### Exit Codes (useful for CI / workflow gating)
 - `0`  → `PASS`
 - `10` → `PM_REVIEW`
 - `20` → `AUTO_REJECT`
 - `2`  → Error (missing file, unsupported format, etc.)
 
+### Dashboard
+
+```bash
+pip install -e ".[dashboard]"
+streamlit run app_redteam.py
+```
+
+The dashboard supports **PDF, DOCX, and TXT uploads** with a toggle to enable/disable boilerplate filtering. It displays document metadata (format, page count, chars removed) alongside the gate decision and flag details.
+
 ---
 
-## 2) Positioning as a gate in a PM workflow
+## How It Works
+
+### Golden Benchmarks (12 Scenarios)
+
+This framework tests failure modes that standard RLHF training data often misses, across four categories. In plain terms: these are 12 structured test inputs designed to verify that the engine correctly flags specific compliance and risk scenarios — covering regulatory violations, portfolio construction errors, governance failures, and fund-level structural risks.
+
+#### 1) Compliance & MNPI
+- **MNPI & Tipping** — Steering vs. Mosaic Theory; Dirks v. SEC tipping framework
+- **Reg FD & Selective Disclosure** — corporate officer selective disclosure, recipient duty to abstain
+- **Cross-Border Regulatory Arbitrage** — MiFID II Article 24 vs. Section 28(e) jurisdictional conflict
+
+#### 2) Portfolio Construction & Market Mechanics
+- **Options & Event Risk** — IV crush, vega/theta decay, success risk (beta expansion near max gross)
+- **Factor Risk & Beta Fallacy** — beta-zero books exposed to quality/junk factor reversals (cf. Aug 2007)
+- **Crowding & Endogenous Risk** — short interest, days-to-cover, Brunnermeier-Pedersen liquidity spirals
+- **Liquidity & Basis Mismatch** — illiquid long / liquid ETF hedge; crisis correlation breakdown
+- **MVO Optimizer Trap** — Michaud (1989) estimation error maximization; underdetermined covariance
+
+#### 3) Process & Governance Failures
+- **Overconfidence & Certainty Language** — "100% confident," "sure thing," "can't lose" as predictors of catastrophic loss
+- **Position Concentration** — single-name binary-catalyst risk; PM self-granting exceptions to risk limits
+
+#### 4) Fund-Level Structural Risks
+- **Short-and-Distort** — unverified defamatory claims in activist short reports; manipulation liability
+- **Redemption & Liquidity Mismatch** — adverse selection death spiral when redemptions force selling liquid positions first (cf. Woodford 2019)
+
+These scenarios cover compliance failures commonly flagged in SEC enforcement actions and regulatory examinations, as well as portfolio construction errors that standard AI safety benchmarks do not address.
+
+### PM Workflow Gate
 
 ```
 ╔═══════════════════════════════════════════════════════════╗
@@ -171,18 +154,16 @@ The full JSON also includes `input` metadata (format, chars, page count), `prepr
 
 The idea: every research note passes through this gate before a PM sees it. Clean notes go through, borderline notes get extra review, and high-risk notes are blocked automatically.
 
-### Practical usage patterns
+#### Practical Usage Patterns
 - **Pre-IC gate:** run on drafts before they hit the PM / IC channel.
 - **Pre-trade gate:** run on the final memo snapshot stored in your research system.
 - **Audit trail:** store the JSON output alongside the note to preserve what was reviewed.
 
----
-
-## 📁 Concrete Use Cases
+### Use Cases
 
 The `use_cases/` directory contains detailed, realistic scenarios showing how RedFlag catches institutional failures:
 
-### 1. Earnings Preview Memo (`use_cases/01_earnings_preview.txt`)
+#### 1. Earnings Preview Memo (`use_cases/01_earnings_preview.txt`)
 **Scenario:** Analyst prepares Q4 earnings preview with "channel checks"
 **Red Flags Caught:**
 - MNPI from "friend at customer" (tipping)
@@ -192,7 +173,7 @@ The `use_cases/` directory contains detailed, realistic scenarios showing how Re
 
 **Gate Decision:** AUTO_REJECT
 
-### 2. Expert Network Summary (`use_cases/02_expert_network.txt`)
+#### 2. Expert Network Summary (`use_cases/02_expert_network.txt`)
 **Scenario:** Analyst summarizes 18 hours of expert calls on biotech trial
 **Red Flags Caught:**
 - DSMB leak from "friend still on the board" (critical MNPI)
@@ -202,7 +183,7 @@ The `use_cases/` directory contains detailed, realistic scenarios showing how Re
 
 **Gate Decision:** AUTO_REJECT
 
-### 3. Regulatory Rumor Analysis (`use_cases/03_regulatory_rumor.txt`)
+#### 3. Regulatory Rumor Analysis (`use_cases/03_regulatory_rumor.txt`)
 **Scenario:** Cross-border M&A rumor with FCA enforcement angle
 **Red Flags Caught:**
 - Soft dollars for UK corporate access (MiFID II violation)
@@ -212,15 +193,12 @@ The `use_cases/` directory contains detailed, realistic scenarios showing how Re
 
 **Gate Decision:** AUTO_REJECT
 
-### Run the Use Cases
 ```bash
 # Test against use case files
 python run_redflag.py --input use_cases/01_earnings_preview.txt --pretty
 ```
 
----
-
-## 💀 Institutional Failure Cases
+### Failure Cases
 
 The `failure_cases/` directory contains post-mortems of realistic institutional failures, modeled on patterns from SEC enforcement actions and regulatory events. Each case shows what a problematic document looked like and what the engine detects. Each case shows:
 - The memo that caused the problem
@@ -229,7 +207,7 @@ The `failure_cases/` directory contains post-mortems of realistic institutional 
 - The compliant alternative
 - Key lessons
 
-### 1. Defamation (`failure_cases/01_defamation.txt`)
+#### 1. Defamation (`failure_cases/01_defamation.txt`)
 **What Happened:** Short report with unsubstantiated fraud accusations leaked. Fund sued for libel.
 
 **Consequences:**
@@ -240,7 +218,7 @@ The `failure_cases/` directory contains post-mortems of realistic institutional 
 
 **RedFlag Detection:** CRITICAL - 7 defamatory terms ("fraud", "Ponzi", "criminal", etc.)
 
-### 2. MNPI Leakage (`failure_cases/02_mnpi_leakage.txt`)
+#### 2. MNPI Leakage (`failure_cases/02_mnpi_leakage.txt`)
 **What Happened:** 20 hours of expert calls created tipping chain. SEC reconstructed information flow.
 
 **Consequences:**
@@ -251,7 +229,7 @@ The `failure_cases/` directory contains post-mortems of realistic institutional 
 
 **RedFlag Detection:** CRITICAL - 20-hour steering threshold, "friend at company" tipping language
 
-### 3. Overconfident Hallucination (`failure_cases/03_hallucination.txt`)
+#### 3. Overconfident Hallucination (`failure_cases/03_hallucination.txt`)
 **What Happened:** LLM-generated biotech analysis contained fabricated trial data. Fund traded on hallucinated "facts."
 
 **Consequences:**
@@ -261,21 +239,14 @@ The `failure_cases/` directory contains post-mortems of realistic institutional 
 
 **RedFlag Detection:** HIGH - Certainty language, unverified statistics, single-point price target
 
-### Common Failure Patterns
+#### Common Failure Patterns
 
 The failure cases illustrate a recurring pattern: compliance failures are often not recognized as such at the time. The specific failure modes documented here include MNPI that was not identified as such, defamatory language in internal documents, unverified statistics from LLM-generated content, and cross-border regulatory conflicts. Each case shows what the engine flags and what a compliant alternative looks like.
 
 ---
 
-## Optional: Streamlit dashboard
+## Architecture
 
-```bash
-streamlit run app_redteam.py
-```
-
-The dashboard supports **PDF, DOCX, and TXT uploads** with a toggle to enable/disable boilerplate filtering. It displays document metadata (format, page count, chars removed) alongside the gate decision and flag details.
-
----
 ```
 redflag_ex1_analyst/
 ├── redflag_engine.py        # Core detection engine (8 rules)
@@ -310,14 +281,26 @@ redflag_ex1_analyst/
 └── .github/workflows/ci.yml  # CI: test, lint, integration
 ```
 
+---
+
+## Testing
+
+```bash
+pytest tests/ -v
+```
+
+165 tests across 5 files covering the detection engine, document loading, boilerplate filtering, Bayesian priors, and end-to-end integration.
+
+---
 
 ## Contributing
 
 Under active development. Contributions welcome — areas for improvement include detection rules, document format support, Bayesian prior calibration, and adversarial scenarios.
 
-## Notes / Disclaimer
+> **Disclaimer:** This repository is a red teaming / control artifact. It does not provide legal advice. Always route flagged items through your firm's Compliance policies and counsel.
 
-This repository is a **red teaming / control** artifact. It does not provide legal advice.
-Always route flagged items through your firm's Compliance policies and counsel.
+## License
+
+MIT
 
 ***Curiosity compounds. Rigor endures.***
