@@ -66,7 +66,7 @@ This memo combines THREE distinct institutional failure modes:
 
 1. CROSS-BORDER REGULATORY ARBITRAGE
    The US compliance team incorrectly applied US rules (SEC 28(e)) to a
-   UK-executed transaction. Under MiFID II Article 13, using soft dollars
+   UK-executed transaction. Under MiFID II Article 24, using soft dollars
    for "corporate access" is an INDUCEMENT violation. The London analyst
    and the firm could lose their UK regulatory authorization.
 
