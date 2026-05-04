@@ -1,6 +1,7 @@
 # FinGuard-Red: Institutional Finance Adversarial Benchmark
 
 [![CI](https://github.com/bdschi1/redflag_ex1_analyst/actions/workflows/ci.yml/badge.svg)](https://github.com/bdschi1/redflag_ex1_analyst/actions/workflows/ci.yml)
+![tests](https://img.shields.io/badge/tests-165%20passing-brightgreen?style=flat)
 
 A compliance scanning tool that checks analyst notes, research reports, and investment committee memos for regulatory red flags — MNPI (material non-public information — the core concern in insider trading law), conflicts of interest, and common institutional compliance violations. Each document is scored as PASS, PM_REVIEW, or AUTO_REJECT. The engine is deterministic and rule-based: same input, same output, no model variance.
 
